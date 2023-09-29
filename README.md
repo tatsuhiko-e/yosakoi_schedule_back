@@ -1,24 +1,80 @@
-# README
+### 環境構築
+***
+## docker
+コンテナ
+- backend: Rails7 API サーバー
+- db: DB　MySQL:8
+- frontend: next.js
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## 起動
+各URLのリポジトリをcloneして任意のディレクトリに配置  
+https://github.com/tatsuhiko-e/yosakoi_schedule_front 
+https://github.com/tatsuhiko-e/yosakoi_schedule_back  
 
-Things you may want to cover:
+任意のディレクトリ  
+├─yosakoi_schedule_front  
+└─yosakoi_schedule_back  
 
-* Ruby version
+任意のディレクトリ直下にdocker-compose.yml作成  
+``` docker-compose.yml
+version: '3.8'
 
-* System dependencies
+services:
+  db:
+    image: mysql:8.0
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: sample
+      MYSQL_PASSWORD: password
+    ports:
+      - 4306:3306
+    volumes:
+      - mysql-db:/var/lib/mysql
+  backend:
+    tty: true
+    depends_on:
+      - db
+    build:
+      context: ./yosakoi_schedule_back/
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    volumes:
+      - ./yosakoi_schedule_back:/app
+    command: rails server -b 0.0.0.0
+  frontend:
+    build:
+      context: ./yosakoi_schedule_front/
+      dockerfile: Dockerfile
+    volumes:
+      - ./yosakoi_schedule_front/app:/usr/src/app
+    command: 'npm run dev'
+    ports:
+      - '8001:3000'
+volumes:
+  mysql-db:
+    driver: local
 
-* Configuration
+```
 
-* Database creation
+任意のディレクトリ  
+├─yosakoi_schedule_front  
+├─yosakoi_schedule_back  
+└─docker-compose.yml  
 
-* Database initialization
+任意のディレクトリに移動しbuild
+```
+docker-compose build
+```
 
-* How to run the test suite
+#### 各コンテナの起動
 
-* Services (job queues, cache servers, search engines, etc.)
+```bash
+docker-compose up
+```
 
-* Deployment instructions
+rails: http://localhost:3000/  
+next: http://localhost:8001/
 
-* ...
+もし誤りや補足ががある場合、pull requestお願い致します。
