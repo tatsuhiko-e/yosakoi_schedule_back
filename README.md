@@ -4,7 +4,7 @@
 コンテナ
 - backend: Rails7 API サーバー
 - db: DB　MySQL:8
-- frontend: next.js
+- frontend: React.js
 
 ## 起動
 各URLのリポジトリをcloneして任意のディレクトリに配置  
@@ -45,13 +45,13 @@ services:
     command: rails server -b 0.0.0.0
   frontend:
     build:
-      context: ./yosakoi_schedule_front/
+      context: ./frontend/
       dockerfile: Dockerfile
     volumes:
-      - ./yosakoi_schedule_front/app:/usr/src/app
-    command: 'npm run dev'
+      - ./frontend:/usr/src/app
+    command: sh -c "cd app && npm install &&  npm start"
     ports:
-      - '8001:3000'
+      - "4000:3000"
 volumes:
   mysql-db:
     driver: local
@@ -74,7 +74,7 @@ docker-compose build
 docker-compose up
 ```
 
-rails: http://localhost:3000/  
-next: http://localhost:8001/
+Rails: http://localhost:3000/  
+React: http://localhost:4000/
 
 もし誤りや補足ががある場合、pull requestお願い致します。
