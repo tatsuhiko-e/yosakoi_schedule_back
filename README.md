@@ -45,7 +45,7 @@ services:
     command: rails server -b 0.0.0.0
   frontend:
     build:
-      context: ./frontend/
+      context: ./yosakoi_schedule_front/
       dockerfile: Dockerfile
     volumes:
       - ./frontend:/usr/src/app
@@ -76,5 +76,3 @@ docker-compose up
 
 Rails: http://localhost:3000/  
 React: http://localhost:4000/
-
-もし誤りや補足ががある場合、pull requestお願い致します。
