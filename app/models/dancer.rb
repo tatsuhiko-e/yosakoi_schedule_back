@@ -1,0 +1,6 @@
+class Dancer < ApplicationRecord
+
+
+
+
+end
