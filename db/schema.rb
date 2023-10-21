@@ -29,6 +29,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_09_050650) do
     t.integer "sub_area"
     t.boolean "is_active"
     t.boolean "is_recruitment"
+    t.string "registration_code"
     t.text "tokens"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
