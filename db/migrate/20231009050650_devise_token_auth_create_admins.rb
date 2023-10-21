@@ -35,7 +35,7 @@ class DeviseTokenAuthCreateAdmins < ActiveRecord::Migration[7.0]
       t.integer  :sub_area
       t.boolean  :is_active
       t.boolean  :is_recruitment
-      t.string   :registration_code
+      t.string   :registration_code, :unique => true
 
       ## Tokens
       t.text :tokens
