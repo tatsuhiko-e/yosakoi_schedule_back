@@ -17,12 +17,6 @@ describe 'Adminモデルのテスト', Admin do
       expect(admin.errors.full_messages).to include("Name can't be blank")
     end
 
-    it "nameが漢字、ひらがな、カタカナ以外の場合は登録できないこと" do
-      admin.name = "abcdefg"
-      admin.valid?
-      expect(admin.errors.full_messages).to include("Name は漢字、ひらがな、カタカナのみが許可されています")
-    end
-
     it "nameが21文字以上の場合は登録できないこと" do
       admin.name = "あああああああああああああああああああああ"
       admin.valid?
