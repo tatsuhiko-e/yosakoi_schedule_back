@@ -1,5 +1,5 @@
 class Api::Mobile::DancersController < ApplicationController
-  :authenticate_api_mobile_user!, except: [:index, :show, ;]
+  :authenticate_api_mobile_user!, except: [:index, :show, :create]
   def index
     dancers = Dancer.where(admin.id: current_api_mobile_user)
     render json: dancers, status: :ok
@@ -13,7 +13,7 @@ class Api::Mobile::DancersController < ApplicationController
   def create
     dancer = Dancer.new(dancer_params)
     dancer.user_id = current_api_mobile_user.id
-    dancer.admin_id = Admin.find(registration_code: code).where(is_active: true).id
+    dancer.admin_id = Admin.find_by(registration_code: admin_params.registration_code).where(is_active: true).id
     if dancer.save
       render json: { status: :success, data: dancer }
     else
