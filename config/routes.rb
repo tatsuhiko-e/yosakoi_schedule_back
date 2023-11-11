@@ -12,9 +12,14 @@ Rails.application.routes.draw do
     namespace :mobile do
       mount_devise_token_auth_for 'User', at: "user", controllers: {
         registrations: 'api/mobile/user/registrations'
-      }
+      } do
+        resources :dancers
+      end
       namespace :user do
         resources :sessions, only: %i[index]
+      end
+      resources :user, only: %i[show] do
+        resources :dancers
       end
     end
   end
