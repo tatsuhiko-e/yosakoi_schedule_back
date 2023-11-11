@@ -45,6 +45,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_09_062922) do
     t.integer "gender"
     t.string "profile"
     t.boolean "is_active", default: false, null: false
+    t.string "registration_code"
     t.bigint "user_id"
     t.bigint "admin_id"
     t.datetime "created_at", null: false
