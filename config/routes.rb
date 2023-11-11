@@ -6,7 +6,7 @@ Rails.application.routes.draw do
         registrations: 'api/mobile/user/registrations'
       }
       namespace :admin do
-        resources :sessions, only: %i[index]
+        resources :sessions,:registrations, only: %i[index]
       end
     end
     namespace :mobile do
