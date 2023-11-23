@@ -63,4 +63,33 @@ DeviseTokenAuth.setup do |config|
   # devise confirmable module. If you want to use devise confirmable module and
   # send email, set it to true. (This is a setting for compatibility)
   # config.send_confirmation_email = true
+  # Userモデル用の設定
+  if defined?(User)
+    config.user_class = "User"
+    config.provider = "phone_number"
+    config.change_headers_on_each_request = false
+    config.required_params = [:password, :password_confirmation, :phone_number]
+    config.headers_names = {
+      :'authorization' => 'Authorization',
+      :'access-token' => 'access-token',
+      :'client' => 'client',
+      :'expiry' => 'expiry',
+      :'uid' => 'phone_number',
+      :'token-type' => 'token-type'
+    }
+  end
+
+  if defined?(Admin)
+    # Adminモデルに対する設定
+    config.user_class = "Admin"
+    config.headers_names = {
+      :'authorization' => 'Authorization',
+      :'access-token' => 'access-token',
+      :'client' => 'client',
+      :'expiry' => 'expiry',
+      :'uid' => 'uid',
+      :'token-type' => 'token-type'
+    }
+  end
+
 end
