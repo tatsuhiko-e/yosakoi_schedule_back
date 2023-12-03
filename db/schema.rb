@@ -55,11 +55,18 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_01_234351) do
   end
 
   create_table "events", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "title", null: false
+    t.string "area"
+    t.string "context"
+    t.integer "status", null: false
+    t.boolean "release_flag", null: false
     t.integer "event_id", null: false
-    t.integer "dancer_id", null: false
-    t.integer "admin_id", null: false
+    t.bigint "dancer_id"
+    t.bigint "admin_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["admin_id"], name: "index_events_on_admin_id"
+    t.index ["dancer_id"], name: "index_events_on_dancer_id"
   end
 
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
