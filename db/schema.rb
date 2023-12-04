@@ -60,9 +60,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_01_234351) do
     t.string "context"
     t.integer "status", null: false
     t.boolean "release_flag", null: false
-    t.integer "event_id", null: false
-    t.bigint "dancer_id"
-    t.bigint "admin_id"
+    t.integer "event_id"
+    t.bigint "dancer_id", null: false
+    t.bigint "admin_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["admin_id"], name: "index_events_on_admin_id"

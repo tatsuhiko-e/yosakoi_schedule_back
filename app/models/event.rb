@@ -1,4 +1,4 @@
 class Event < ApplicationRecord
-    belongs_to: dancer
+    belongs_to :dancer
 
 end

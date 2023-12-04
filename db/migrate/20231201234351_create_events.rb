@@ -6,9 +6,9 @@ class CreateEvents < ActiveRecord::Migration[7.0]
       t.string      :context
       t.integer     :status, :null => false
       t.boolean     :release_flag, :null => false
-      t.integer     :event_id, :null => false
-      t.references  :dancer
-      t.references  :admin
+      t.integer     :event_id
+      t.references  :dancer, null: false
+      t.references  :admin, null: false
       t.timestamps
     end
   end
