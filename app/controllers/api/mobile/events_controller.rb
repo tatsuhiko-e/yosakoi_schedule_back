@@ -2,7 +2,8 @@ class Api::Mobile::EventsController < ApplicationController
   before_action :authenticate_api_mobile_user!, only: [:create, :index]
 
   def index
-    events = Event.where(id: params[:dancer_id])
+    dancer = Dancer.find_by(id: params[:dancer_id])
+    events = Event.where(admin_id: dancer.admin_id)
     render json: events, status: :ok
   end
 
@@ -12,8 +13,6 @@ class Api::Mobile::EventsController < ApplicationController
     event.dancer_id = dancer.id
     event.admin_id = dancer.admin_id
     if event.save
-      event.event_id = event.id
-      event.save
       render json: { status: :success, data: event }
     else
       render json: { status: :bad_request, message: 'Not created' }
