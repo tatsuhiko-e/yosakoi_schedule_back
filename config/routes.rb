@@ -21,6 +21,9 @@ Rails.application.routes.draw do
       resources :user, only: %i[show] do
         resources :dancers
       end
+      resources :dancers do
+        resources :events, only: %i[create index]
+      end
     end
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
