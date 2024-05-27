@@ -1,6 +1,8 @@
 name: Run RSpec
 
 on:
+  release:
+    types: [published]
   pull_request:
     types:
       - ready_for_review
