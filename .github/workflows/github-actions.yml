@@ -20,4 +20,3 @@ jobs:
         run: echo "Hello World"
       - name: Greeting
         run: echo "Goodbye World"
-
