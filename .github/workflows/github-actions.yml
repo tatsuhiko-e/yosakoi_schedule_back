@@ -38,7 +38,7 @@ jobs:
             echo "This PR is not a draft. Continuing."
           fi
         env:
-          GITHUB_TOKEN: 
+          GITHUB_TOKEN:  ${{ secrets.TOKEN }}
 
       - name: Greeting
         run: echo "Goodbye World11111"
