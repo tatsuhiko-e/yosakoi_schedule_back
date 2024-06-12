@@ -24,6 +24,7 @@ jobs:
             "https://api.github.com/repos/${{ github.repository }}/pulls?state=open&head=${{ github.repository }}/${BRANCH_NAME}")
 
           PR_NUMBER=$(echo "$PR_DATA" | jq -r '.[0].number')
+          echo "PR Number: $PR_NUMBER"
 
           if [ "$PR_NUMBER" == "null" ]; then
             echo "pr_found=false" >> $GITHUB_ENV
