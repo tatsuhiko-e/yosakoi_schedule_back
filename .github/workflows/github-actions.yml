@@ -49,6 +49,6 @@ jobs:
       - name: Continue only if not draft
         run: |
           echo "Hello World22222"
-          echo steps.get_pr.outputs.pr_found
-          echo steps.get_pr.outputs.is_draft
-          echo env.is_draft
+          echo ${steps.get_pr.outputs.pr_found}
+          echo ${steps.get_pr.outputs.is_draft}
+          echo ${env.is_draft}
