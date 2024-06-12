@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Get PRs for branch
         id: get_prs
@@ -38,7 +38,7 @@ jobs:
             echo "This PR is not a draft. Continuing."
           fi
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: 
 
       - name: Greeting
         run: echo "Goodbye World11111"
