@@ -17,11 +17,11 @@ jobs:
         id: get_prs
         uses: octokit/request-action@v2.3.1
         with:
+          token:  ${{ secrets.TOKEN }}
           route: GET /repos/${{ github.repository }}/pulls
           query: |
             state=open
             head=${{ github.repository }}:${{ github.ref }}
-          token:  ${{ secrets.TOKEN }}
 
       - name: Check if PR is draft
         id: check_draft
