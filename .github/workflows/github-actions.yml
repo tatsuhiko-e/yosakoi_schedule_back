@@ -7,12 +7,42 @@ on:
       - ready_for_review
 
 jobs:
-  if: ${{ github.event.pull_request.draft == false }}
   echo:
     runs-on: ubuntu-latest
     steps:
-      - name: Greeting
-        run: echo "Hello World"
-      - name: Greeting
-        run: echo "Goodbye World"
+      - name: Check out repository
+        uses: actions/checkout@v2
 
+      - name: Get PRs for branch
+        id: get_prs
+        uses: octokit/request-action@v2
+        with:
+          route: GET /repos/${{ github.repository }}/pulls
+          query: |
+            state=open
+            head=${{ github.repository }}:${{ github.ref }}
+
+      - name: Check if PR is draft
+        id: check_draft
+        run: |
+          pr_number=$(echo "${{ steps.get_prs.outputs.data }}" | jq -r '.[0].number')
+          if [ -z "$pr_number" ]; then
+            echo "No open PR found for this branch."
+            exit 0
+          fi
+          draft=$(echo "${{ steps.get_prs.outputs.data }}" | jq -r '.[0].draft')
+          if [ "$draft" == "true" ]; then
+            echo "This PR is a draft. Exiting."
+            exit 0
+          else
+            echo "This PR is not a draft. Continuing."
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Greeting
+        run: echo "Goodbye World11111"
+
+      - name: Continue only if not draft
+        if: success() && steps.check_draft.outputs.is_draft != 'true'
+        run: echo "Hello World22222"
