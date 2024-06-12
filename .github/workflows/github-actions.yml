@@ -39,6 +39,8 @@ jobs:
             echo "pr_found=true" >> $GITHUB_ENV
           fi
 
+          echo "Is Draft: $IS_DRAFT"
+
       - name: Continue only if not draft and PR found
         if: steps.get_pr.outputs.pr_found == 'true' && steps.get_pr.outputs.is_draft == 'false'
         run: echo "Goodbye World11111"
