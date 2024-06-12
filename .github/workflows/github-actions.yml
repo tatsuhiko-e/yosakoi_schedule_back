@@ -1,0 +1,48 @@
+name: Run RSpec
+
+on:
+  push:
+  pull_request:
+    types:
+      - ready_for_review
+
+jobs:
+  echo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+      - name: Get PR for branch
+        run: |
+          BRANCH_NAME="${GITHUB_REF#refs/heads/}"
+          echo "Branch: $BRANCH_NAME"
+
+          PR_DATA=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/${{ github.repository }}/pulls?state=open&head=${{ github.repository }}/${BRANCH_NAME}")
+
+          PR_NUMBER=$(echo "$PR_DATA" | jq -r '.[0].number')
+          echo "PR Number: $PR_NUMBER"
+
+          if [ "$PR_NUMBER" == "null" ]; then
+            echo "pr_found=false" >> $GITHUB_ENV
+          fi
+
+          IS_DRAFT=$(echo "$PR_DATA" | jq -r '.[0].draft')
+          echo "Is Draft: $IS_DRAFT"
+
+          if [ "$IS_DRAFT" == "true" ]; then
+            echo "is_draft=true" >> $GITHUB_ENV
+            echo "pr_found=true" >> $GITHUB_ENV
+          else
+            echo "is_draft=false" >> $GITHUB_ENV
+            echo "pr_found=true" >> $GITHUB_ENV
+          fi
+
+      - name: Continue only if not draft and PR found
+        if: env.pr_found == 'true' && env.is_draft == 'false'
+        run: echo "Goodbye World11111"
+
+      - name: Continue only if not draft
+        run: |
+          echo "Hello World22222"
