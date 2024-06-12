@@ -30,6 +30,7 @@ jobs:
           fi
 
           IS_DRAFT=$(echo "$PR_DATA" | jq -r '.[0].draft')
+          echo "Is Draft: $IS_DRAFT"
 
           if [ "$IS_DRAFT" == "true" ]; then
             echo "is_draft=true" >> $GITHUB_ENV
@@ -39,7 +40,6 @@ jobs:
             echo "pr_found=true" >> $GITHUB_ENV
           fi
 
-          echo "Is Draft: ${IS_DRAFT}"
 
       - name: Continue only if not draft and PR found
         if: steps.get_pr.outputs.pr_found == 'true' && steps.get_pr.outputs.is_draft == 'false'
