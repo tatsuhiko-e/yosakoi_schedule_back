@@ -15,7 +15,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Get PRs for branch
-        id: get_prs
+        id: get_pr
         run: |
           BRANCH_NAME="${GITHUB_REF#refs/heads/}"
           echo "Branch: $BRANCH_NAME"
@@ -24,30 +24,23 @@ jobs:
             "https://api.github.com/repos/${{ github.repository }}/pulls?state=open&head=${{ github.repository }}/${BRANCH_NAME}")
 
           PR_NUMBER=$(echo "$PR_DATA" | jq -r '.[0].number')
-          echo "PR Number: $PR_NUMBER"
 
           if [ "$PR_NUMBER" == "null" ]; then
-            echo "No open PR found for this branch."
             echo "pr_found=false" >> $GITHUB_ENV
-            exit 0
           fi
 
           IS_DRAFT=$(echo "$PR_DATA" | jq -r '.[0].draft')
-          echo "Is Draft: $IS_DRAFT"
 
           if [ "$IS_DRAFT" == "true" ]; then
-            echo "This PR is a draft. Exiting."
             echo "is_draft=true" >> $GITHUB_ENV
             echo "pr_found=true" >> $GITHUB_ENV
-            exit 0
           else
-            echo "This PR is not a draft. Continuing."
             echo "is_draft=false" >> $GITHUB_ENV
             echo "pr_found=true" >> $GITHUB_ENV
           fi
 
       - name: Continue only if not draft and PR found
-        if: steps.get_prs.outputs.pr_found == 'true' && steps.get_prs.outputs.is_draft == 'false'
+        if: steps.get_pr.outputs.pr_found == 'true' && steps.get_pr.outputs.is_draft == 'false'
         run: echo "Goodbye World11111"
 
       - name: Continue only if not draft
