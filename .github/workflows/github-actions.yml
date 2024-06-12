@@ -15,33 +15,37 @@ jobs:
 
       - name: Get PRs for branch
         id: get_prs
-        uses: octokit/request-action@v2.3.1
-        with:
-          route: GET /repos/${{ github.repository }}/pulls
-          query: |
-            state=open
-            head=${{ github.repository }}:${{ github.ref }}
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Check if PR is draft
-        id: check_draft
         run: |
-          pr_number=$(echo "${{ steps.get_prs.outputs.data }}" | jq -r '.[0].number')
-          if [ -z "$pr_number" ]; then
+          BRANCH_NAME="${GITHUB_REF#refs/heads/}"
+          echo "Branch: $BRANCH_NAME"
+
+          PR_DATA=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/${{ github.repository }}/pulls?state=open&head=${{ github.repository }}:$BRANCH_NAME")
+
+          PR_NUMBER=$(echo "$PR_DATA" | jq -r '.[0].number')
+          echo "PR Number: $PR_NUMBER"
+          
+          if [ "$PR_NUMBER" == "null" ]; then
             echo "No open PR found for this branch."
+            echo "::set-output name=pr_found::false"
             exit 0
           fi
-          draft=$(echo "${{ steps.get_prs.outputs.data }}" | jq -r '.[0].draft')
-          if [ "$draft" == "true" ]; then
+          
+          IS_DRAFT=$(echo "$PR_DATA" | jq -r '.[0].draft')
+          echo "Is Draft: $IS_DRAFT"
+
+          if [ "$IS_DRAFT" == "true" ]; then
             echo "This PR is a draft. Exiting."
+            echo "::set-output name=is_draft::true"
             exit 0
           else
             echo "This PR is not a draft. Continuing."
+            echo "::set-output name=is_draft::false"
+            echo "::set-output name=pr_found::true"
           fi
-        env:
-          GITHUB_TOKEN:  ${{ secrets.TOKEN }}
 
-      - name: Greeting
+      - name: Continue only if not draft and PR found
+        if: steps.get_prs.outputs.pr_found == 'true' && steps.get_prs.outputs.is_draft == 'false'
         run: echo "Goodbye World11111"
 
       - name: Continue only if not draft
