@@ -49,5 +49,4 @@ jobs:
         run: echo "Goodbye World11111"
 
       - name: Continue only if not draft
-        if: success() && steps.check_draft.outputs.is_draft != 'true'
         run: echo "Hello World22222"
