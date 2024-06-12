@@ -13,8 +13,7 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v2
 
-      - name: Get PRs for branch
-        id: get_pr
+      - name: Get PR for branch
         run: |
           BRANCH_NAME="${GITHUB_REF#refs/heads/}"
           echo "Branch: $BRANCH_NAME"
