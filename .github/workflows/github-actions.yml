@@ -43,10 +43,9 @@ jobs:
 
 
       - name: Continue only if not draft and PR found
-        if: steps.get_pr.outputs.pr_found == 'true' && steps.get_pr.outputs.is_draft == 'false'
+        if: env.pr_found == 'true' && env.is_draft == 'false'
         run: echo "Goodbye World11111"
 
       - name: Continue only if not draft
         run: |
           echo "Hello World22222"
-          echo "${env.is_draft}"
