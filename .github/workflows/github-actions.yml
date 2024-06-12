@@ -21,8 +21,7 @@ jobs:
           query: |
             state=open
             head=${{ github.repository }}:${{ github.ref }}
-        with:
-          GITHUB_TOKEN:  ${{ secrets.TOKEN }}
+          token:  ${{ secrets.TOKEN }}
 
       - name: Check if PR is draft
         id: check_draft
