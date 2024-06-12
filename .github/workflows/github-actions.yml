@@ -25,24 +25,25 @@ jobs:
 
           PR_NUMBER=$(echo "$PR_DATA" | jq -r '.[0].number')
           echo "PR Number: $PR_NUMBER"
-          
+
           if [ "$PR_NUMBER" == "null" ]; then
             echo "No open PR found for this branch."
-            echo "::set-output name=pr_found::false"
+            echo "pr_found=false" >> $GITHUB_ENV
             exit 0
           fi
-          
+
           IS_DRAFT=$(echo "$PR_DATA" | jq -r '.[0].draft')
           echo "Is Draft: $IS_DRAFT"
 
           if [ "$IS_DRAFT" == "true" ]; then
             echo "This PR is a draft. Exiting."
-            echo "::set-output name=is_draft::true"
+            echo "is_draft=true" >> $GITHUB_ENV
+            echo "pr_found=true" >> $GITHUB_ENV
             exit 0
           else
             echo "This PR is not a draft. Continuing."
-            echo "::set-output name=is_draft::false"
-            echo "::set-output name=pr_found::true"
+            echo "is_draft=false" >> $GITHUB_ENV
+            echo "pr_found=true" >> $GITHUB_ENV
           fi
 
       - name: Continue only if not draft and PR found
