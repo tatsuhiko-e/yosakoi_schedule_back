@@ -7,8 +7,8 @@ on:
       - ready_for_review
 
 jobs:
+  if: ${{ github.event.pull_request.draft == false }}
   echo:
-    if: ${{ github.event.pull_request.draft == false }}
     runs-on: ubuntu-latest
     steps:
       - name: Greeting
